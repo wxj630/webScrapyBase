@@ -11,6 +11,7 @@ import random
 # 存储为文本的子函数
 def write2txt(data,path):
     with open(path,"a+",encoding="utf-8") as f:
+        f.write(aid+"\n")
         f.write(data+"\n")
         f.close()
 
@@ -93,11 +94,27 @@ def catchPlaylist(url):
 
 
 if __name__ == '__main__':
-
-    for url in ['http://music.163.com/user/home?id=355488332']:
-        # 这里把自己的id替换掉，想爬谁的歌单都可以，只要你有他的id
-        # time.sleep(random.randint(2, 4)) # 随机休眠时间2~4秒
-        url_playlist = catchPlaylist(url)
-        print(url_playlist)
-        # time.sleep(random.randint(1, 2))
-        catchSongs(url, url_playlist)
+    id_list = [59577399,
+                5572309,
+                54716168,
+                302906238,
+                91866735,
+                34037160,
+                33436583,
+                37021013,
+                13941313,
+                42628695,
+                57651700,
+                1518148,
+                59189593,
+                30085675,
+                38374651
+                ]
+    for aid in id_list:
+        for url in ['http://music.163.com/user/home?id='+str(aid)]:
+            # 这里把自己的id替换掉，想爬谁的歌单都可以，只要你有他的id
+            # time.sleep(random.randint(2, 4)) # 随机休眠时间2~4秒
+            url_playlist = catchPlaylist(url)
+            print(url_playlist)
+            time.sleep(random.randint(1, 2))
+            catchSongs(url, url_playlist)

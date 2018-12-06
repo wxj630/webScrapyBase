@@ -61,6 +61,7 @@ def get_items(html):
     for item in html['followeds']:
         fans_items = {}
         fans_items['nickname'] = item['nickname']
+        fans_items['uid'] = item['userId']
         # gender=0 没有性别信息,gender=1表示男,gender=2表示女
         fans_items['location'], fans_items['gender'] = get_location(item['userId'])
         uinfos.append(fans_items)
@@ -139,23 +140,22 @@ def get_params(id_msg):
 # url = 'https://music.163.com/#/user/fans?id=97137413'
 # 包含粉丝数据的页面的URL
 # 歌手id
-aid = '97137413'
-url = 'https://music.163.com/weapi/user/getfolloweds?csrf_token=cdee144903c5a32e6752f50180329fc9'
-page = 1
+ls=[]
 
-while page:
-    offset = (page-1) * 20
-    id_msg = '{userId: "' + aid + '", offset: ' + str(offset) + ', total: "true", limit: "20", csrf_token: "cdee144903c5a32e6752f50180329fc9"}'
-    params, encSecKey = get_params(id_msg)
-    data = {'params': params, 'encSecKey': encSecKey}
-    html = get_fans_json(url, data)
-    if html is None:
+for aid in ls:
+    url = 'https://music.163.com/weapi/user/getfolloweds?csrf_token=cdee144903c5a32e6752f50180329fc9'
+    for page in range(1,51):
+        offset = (page-1) * 20
+        id_msg = '{userId: "' + str(aid) + '", offset: ' + str(offset) + ', total: "true", limit: "20", csrf_token: "cdee144903c5a32e6752f50180329fc9"}'
+        params, encSecKey = get_params(id_msg)
+        data = {'params': params, 'encSecKey': encSecKey}
+        html = get_fans_json(url, data)
+        if html is None:
+            break
+        else:
+            with open('C:\\Users\Administrator.QH-20150404EHBO\PycharmProjects\webScrapyBase\music163-spiders-master\\3_fansinfo\%s_fansinfo.txt'%aid, 'a+', encoding='utf-8') as f:
+                for item in get_items(html):
+                    f.write("{}\n".format(item))
 
-        break
-    else:
-        with open('fansinfo.txt', 'at', encoding='utf-8') as f:
-            for item in get_items(html):
-                f.write("{}\n".format(item))
-        f.close()
 
-    page += 1
+
