@@ -11,6 +11,7 @@ import random
 # 存储为文本的子函数
 def write2txt(data,path):
     with open(path,"a+",encoding="utf-8") as f:
+        f.write(aid+"\n")
         f.write(data+"\n")
         f.close()
 
@@ -49,9 +50,10 @@ def catchSongs(url_id,url):
                 song_key +=1
                 #new_line = "%s|%s|%s|%s|%s|%s|%s"%(user,info_[0],info_[1],info_[2],info_[3],info_[4],info_[5])
 
-                print(new_line)
+                # print(new_line)
 
-                write2txt(new_line,user)
+                with open("1_playlist/%s_playlist.txt"%aid, "a+", encoding="utf-8") as f:
+                    f.write(new_line + "\n")
 
                 # mac写入文件需要改变字符，以id命名的文件，存储在执行脚本的当前路径下，
                 # 在win下请去掉编.endcode('utf-8')
@@ -64,8 +66,8 @@ def catchSongs(url_id,url):
         pass
 
     finally:
-        # driver.quit()
-        pass
+        driver.quit()
+
 
 
 
@@ -101,11 +103,12 @@ def catchPlaylist(url):
 
 
 if __name__ == '__main__':
-
-    for url in ['http://music.163.com/user/home?id=355488332']:
-        url_playlist = catchPlaylist(url)
-        print(url_playlist)
-        # 这里把自己的id替换掉，想爬谁的歌单都可以，只要你有他的id
-        for i in range(len(url_playlist)):
-            time.sleep(random.randint(0, 1)) # 随机休眠时间0~1秒
-            catchSongs(url, url_playlist[i])
+    ls=[349450752]
+    for aid in ls:
+        for url in ['http://music.163.com/user/home?id='+str(aid)]:
+            url_playlist = catchPlaylist(url)
+            print(url_playlist)
+            # 这里把自己的id替换掉，想爬谁的歌单都可以，只要你有他的id
+            for i in range(len(url_playlist)):
+                time.sleep(random.randint(0, 1)) # 随机休眠时间0~1秒
+                catchSongs(url, url_playlist[i])
