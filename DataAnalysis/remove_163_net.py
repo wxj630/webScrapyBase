@@ -6,6 +6,8 @@ G = nx.MultiDiGraph()
 G = nx.read_pajek('follow_at_matrix3.net',encoding='utf-8')
 # nx.draw(G,with_labels=True)
 # plt.show()
+G.remove_node('网易云音乐')
+nx.write_pajek(G,'remove_163_net.net')
 
 print('节点数：'+str(G.number_of_nodes()))
 print('边数'+str(G.number_of_edges()))
@@ -26,4 +28,6 @@ f=G.out_degree()
 f1=sorted(f,key=lambda x:x[1],reverse=True)
 f2=f1[0:10]
 print('出度前10:'+str(f2))
+
+
 
