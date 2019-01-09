@@ -1,13 +1,11 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
-G = nx.MultiDiGraph()
+G = nx.DiGraph()
 
-G = nx.read_pajek('follow_at_matrix3.net',encoding='utf-8')
-# nx.draw(G,with_labels=True)
-# plt.show()
-G.remove_node('网易云音乐')
-nx.write_pajek(G,'remove_163_net.net')
+G = nx.read_pajek('remove_163_net.net',encoding='utf-8')
+
+
 
 print('节点数：'+str(G.number_of_nodes()))
 print('边数'+str(G.number_of_edges()))
@@ -28,6 +26,23 @@ f=G.out_degree()
 f1=sorted(f,key=lambda x:x[1],reverse=True)
 f2=f1[0:10]
 print('出度前10:'+str(f2))
+
+print(G.number_of_selfloops())
+for node in G.nodes_with_selfloops():
+    print(node)
+for edge in G.selfloop_edges():
+    print(edge)
+
+G.remove_edge('江映蓉', '江映蓉')
+G.remove_edge('PurpleBattery', 'PurpleBattery')
+
+G.remove_parallel_edges()
+
+
+
+print(nx.pagerank(G,alpha=0.85, personalization=None, max_iter=100, tol=1e-06, nstart=None, weight='weight', dangling=None))
+
+
 
 
 

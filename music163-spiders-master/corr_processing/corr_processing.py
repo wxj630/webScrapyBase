@@ -1,19 +1,23 @@
 import csv
 import networkx
 
-for line in open("closeness.csv", encoding='utf-8'):
-    strlist = line.split(',')
-    name1 = strlist[1].replace(' ','')
-    outdegree = strlist[5].replace('\n','')
-    for line in open("events_follows_fans_num.csv", encoding='utf-8'):
-        strlist = line.split(',')
-        name2 = strlist[0].replace(' ','')
-        events = strlist[1]
-        follows = strlist[2]
-        fans = strlist[3].strip('\n')
+name_list=[]
 
-        if name1==name2:
-            with open("outcloseness_count.csv","a+",encoding="utf-8") as f:
-                f.write(name1+","+outdegree+","+events+","+follows+","+fans+"\n")
+for line in open("singer_count.csv", encoding='utf-8'):
+    strlist = line.split(',')
+    singer_name2 = strlist[1].replace(' ', '')
+    events = strlist[2]
+    follows = strlist[3]
+    fans = strlist[4].strip('\n')
+    name_list.append(singer_name2)
+print(name_list)
+
+for line in open("all_closeness.csv", encoding='utf-8'):
+    strlist = line.split(',')
+    singer_id = strlist[0].strip(' ')
+    singer_name1 = strlist[1].replace(' ','')
+    if singer_name1 not in name_list:
+        with open("1609_count.csv","a+",encoding="utf-8") as f:
+            f.write(singer_id+","+singer_name1+"\n")
 
 
