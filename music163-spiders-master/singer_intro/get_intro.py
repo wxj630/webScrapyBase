@@ -1,8 +1,4 @@
 from selenium import webdriver
-from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
-import re
-import time
-import json
 from selenium.webdriver.firefox.options import Options
 
 
